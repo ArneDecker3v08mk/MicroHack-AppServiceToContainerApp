@@ -32,3 +32,20 @@ jobs:
           echo "${{ secrets.ACR_PASSWORD }}" | docker login -u "${{ secrets.ACR_USERNAME }}" --password-stdin microhackregistry.azurecr.io &&
           docker build -t microhackregistry.azurecr.io/microhackapp:latest -f Dockerfile . &&
           docker push microhackregistry.azurecr.io/microhackapp:latest
+
+      - name: Login to Azure
+        run: az login --service-principal --username ${{ secrets.SERVICE_PRINCIPAL }} --password ${{ secrets.SERVICE_PRINCIPAL_PASSWORD }} --tenant ${{ secrets.TENANT }}
+        
+      - name: Deploy to Container App
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          imageToDeploy: microhackregistry.azurecr.io/microhackapp:latest
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
+          resourceGroup: MicroHack-AppServiceToContainerApp
+          containerAppEnvironment: microhack-containerappenvironment
+          containerAppName: microhack-containerapp
+          targetPort: 80
+          
+          
+          
