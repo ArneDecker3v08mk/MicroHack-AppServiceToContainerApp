@@ -55,6 +55,3 @@ jobs:
           containerAppEnvironment: microhack-containerappenvironment
           containerAppName: microhack-containerapp
           targetPort: 80
-          
-          
-          
