@@ -18,7 +18,7 @@ jobs:
       - name: Get Latest Container Image Tag
         id: get_tag
         run: |
-          TAG=$(az acr repository show-tags --name microhackregistry --repository microhackapp --orderby time_desc --output tsv --detail | head -n 1)
+          TAG=$(az acr repository show-tags --name microhackregistry --repository microhackapp --orderby time_desc --output tsv --detail | head -n 1 | awk '{print $1}')
           echo "::set-output name=image_tag::$TAG"
 
       - name: Print Variable
